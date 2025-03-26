@@ -28,8 +28,4 @@ public class Category {
     @Column(name = "name", nullable = false, unique = true, length = 100)
     private String name;
 
-    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Product> products = new HashSet<>();
-
 }

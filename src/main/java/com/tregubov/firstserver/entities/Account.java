@@ -44,7 +44,7 @@ public class Account {
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Role> roles = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "cart",
             joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
@@ -53,7 +53,7 @@ public class Account {
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Product> cart = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "favorite",
             joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
