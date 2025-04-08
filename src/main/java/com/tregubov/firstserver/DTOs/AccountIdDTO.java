@@ -3,12 +3,12 @@ package com.tregubov.firstserver.DTOs;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
-public class RegisterRequest {
+public class AccountIdDTO {
 
-    private String email;
-
-    private String password;
+    private UUID accountId;
 
 }

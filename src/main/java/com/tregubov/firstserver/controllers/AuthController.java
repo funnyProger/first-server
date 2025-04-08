@@ -1,7 +1,6 @@
 package com.tregubov.firstserver.controllers;
 
-import com.tregubov.firstserver.DTOs.LoginRequest;
-import com.tregubov.firstserver.DTOs.RegisterRequest;
+import com.tregubov.firstserver.DTOs.AuthRequestDTO;
 import com.tregubov.firstserver.constants.Errors;
 import com.tregubov.firstserver.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -22,13 +21,13 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
-        int result = authService.register(registerRequest);
+    public ResponseEntity<String> register(@RequestBody AuthRequestDTO authRequestDTO) {
+        int result = authService.register(authRequestDTO);
         ResponseEntity<String> response = ResponseEntity.status(HttpStatus.CREATED).body("Аккаунт успешно создан");
 
         if (result == Errors.ACCOUNT_ALREADY_EXISTS) {
             response = ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body("Пользователь с почтной " + registerRequest.getEmail() + " уже существует");
+                    .body("Пользователь с почтной " + authRequestDTO.getEmail() + " уже существует");
         }
         if (result == Errors.ACCOUNT_REGISTRATION_FAILED) {
             response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -39,8 +38,8 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest loginRequest) {
-        int result = authService.login(loginRequest);
+    public ResponseEntity<String> login(@RequestBody AuthRequestDTO authRequestDTO) {
+        int result = authService.login(authRequestDTO);
         ResponseEntity<String> response = ResponseEntity.ok("Вход успешно выполнен");
 
         if (result == Errors.ACCOUNT_NOT_EXISTS) {

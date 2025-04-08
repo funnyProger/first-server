@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.UuidGenerator;
 
 import java.sql.Timestamp;
 import java.util.HashSet;
@@ -27,6 +28,8 @@ public class Account {
 
     @Id
     @Column(name = "id")
+    @GeneratedValue
+    @UuidGenerator
     private UUID id;
 
     @Column(name = "email", unique = true, nullable = false, length = 340)

@@ -1,15 +1,15 @@
 package com.tregubov.firstserver.service;
 
-import com.tregubov.firstserver.DTOs.LoginRequest;
-import com.tregubov.firstserver.DTOs.RegisterRequest;
+import com.tregubov.firstserver.DTOs.AuthRequestDTO;
 import com.tregubov.firstserver.constants.Errors;
 import com.tregubov.firstserver.constants.Success;
 import com.tregubov.firstserver.entities.Account;
 import com.tregubov.firstserver.repository.AccountRepository;
+import com.tregubov.firstserver.securiry.PasswordEncryptor;
 import jakarta.transaction.Transactional;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Service
@@ -17,33 +17,33 @@ import java.util.Optional;
 public class AuthService {
 
     private final AccountRepository accountRepository;
-    private final PasswordEncoder passwordEncoder;
 
-    public AuthService(AccountRepository accountRepository, PasswordEncoder passwordEncoder) {
+    public AuthService(AccountRepository accountRepository) {
         this.accountRepository = accountRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
-    public int register(RegisterRequest registerRequest) {
-        if (accountRepository.existsByEmail(registerRequest.getEmail())) {
+    public int register(AuthRequestDTO authRequestDTO) {
+        if (accountRepository.existsByEmail(authRequestDTO.getEmail())) {
             return Errors.ACCOUNT_ALREADY_EXISTS;
         }
 
         try {
 
             Account newAccount = new Account();
-            newAccount.setEmail(registerRequest.getEmail());
-            newAccount.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
+            newAccount.setCreatedAt(new Timestamp(System.currentTimeMillis()));
+            newAccount.setEmail(authRequestDTO.getEmail());
+            newAccount.setPassword(PasswordEncryptor.hashPassword(authRequestDTO.getPassword()));
             accountRepository.save(newAccount);
             return Success.ACCOUNT_IS_REGISTERED;
 
         } catch (Exception exception) {
+            System.out.println(exception.getMessage());
             return Errors.ACCOUNT_REGISTRATION_FAILED;
         }
     }
 
-    public int login(LoginRequest loginRequest) {
-        Optional<Account> accountContainer = accountRepository.findByEmail(loginRequest.getEmail());
+    public int login(AuthRequestDTO authRequestDTO) {
+        Optional<Account> accountContainer = accountRepository.findByEmail(authRequestDTO.getEmail());
 
         if (accountContainer.isEmpty()) {
             return Errors.ACCOUNT_NOT_EXISTS;
@@ -51,7 +51,7 @@ public class AuthService {
 
         try {
 
-            if (!passwordEncoder.matches(loginRequest.getPassword(), accountContainer.get().getPassword())) {
+            if (!PasswordEncryptor.checkPassword(authRequestDTO.getPassword(), accountContainer.get().getPassword())) {
                 return Errors.INCORRECT_PASSWORD;
             }
             return Success.ACCOUNT_IS_LOGGED_IN;

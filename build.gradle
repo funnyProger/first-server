@@ -28,8 +28,6 @@ dependencies {
 	// spring starters
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-	testImplementation 'org.springframework.security:spring-security-test'
 
 
 	// for dev
@@ -39,6 +37,9 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+
+	// jbcrypt for user password
+	implementation 'org.mindrot:jbcrypt:0.4'
 
 	// postgres driver
 	runtimeOnly 'org.postgresql:postgresql'
