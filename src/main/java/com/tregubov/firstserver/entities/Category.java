@@ -7,9 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
 @Table(catalog = "store", schema = "public", name = "category")
 @Cacheable

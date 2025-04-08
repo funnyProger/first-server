@@ -4,10 +4,7 @@ package com.tregubov.firstserver.controllers;
 import com.tregubov.firstserver.entities.Product;
 import com.tregubov.firstserver.service.ProductService;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,9 +23,10 @@ public class ProductController {
         return productService.getAllProducts();
     }
 
-    @GetMapping("/id")
-    public Product getProductById() {
-        return productService.getProductById(1);
+
+    @GetMapping("/by-category/{id}")
+    public List<Product> getProductsByCategory(@PathVariable("id") int categoryId) {
+        return productService.getProductsByCategoryId(categoryId);
     }
 
 }

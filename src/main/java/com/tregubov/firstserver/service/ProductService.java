@@ -21,10 +21,9 @@ public class ProductService {
         return productRepository.findAll();
     }
 
-    public Product getProductById(int id) {
-        return productRepository.findById(id).get();
+    public List<Product> getProductsByCategoryId(int categoryId) {
+        return productRepository.findAllByCategoryId(categoryId);
     }
-
 
 
 }
