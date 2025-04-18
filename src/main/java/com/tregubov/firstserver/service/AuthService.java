@@ -3,9 +3,9 @@ package com.tregubov.firstserver.service;
 import com.tregubov.firstserver.DTOs.AuthRequestDTO;
 import com.tregubov.firstserver.constants.Errors;
 import com.tregubov.firstserver.constants.Success;
-import com.tregubov.firstserver.entities.Account;
+import com.tregubov.firstserver.entities.account.Account;
 import com.tregubov.firstserver.repository.AccountRepository;
-import com.tregubov.firstserver.securiry.PasswordEncryptor;
+import com.tregubov.firstserver.security.PasswordEncryptor;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 

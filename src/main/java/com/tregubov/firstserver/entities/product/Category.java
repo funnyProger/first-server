@@ -1,4 +1,4 @@
-package com.tregubov.firstserver.entities;
+package com.tregubov.firstserver.entities.product;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

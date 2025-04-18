@@ -1,6 +1,6 @@
 package com.tregubov.firstserver.controllers;
 
-import com.tregubov.firstserver.entities.Category;
+import com.tregubov.firstserver.entities.product.Category;
 import com.tregubov.firstserver.service.CategoryService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

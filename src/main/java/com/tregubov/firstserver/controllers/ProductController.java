@@ -1,9 +1,8 @@
 package com.tregubov.firstserver.controllers;
 
 
-import com.tregubov.firstserver.entities.Product;
+import com.tregubov.firstserver.entities.product.Product;
 import com.tregubov.firstserver.service.ProductService;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

@@ -2,8 +2,8 @@ package com.tregubov.firstserver.service;
 
 import com.tregubov.firstserver.DTOs.AccountIdDTO;
 import com.tregubov.firstserver.DTOs.UpdateCartOrFavoritesDTO;
-import com.tregubov.firstserver.entities.Account;
-import com.tregubov.firstserver.entities.Product;
+import com.tregubov.firstserver.entities.account.Account;
+import com.tregubov.firstserver.entities.product.Product;
 import com.tregubov.firstserver.repository.AccountRepository;
 import com.tregubov.firstserver.repository.ProductRepository;
 import jakarta.transaction.Transactional;

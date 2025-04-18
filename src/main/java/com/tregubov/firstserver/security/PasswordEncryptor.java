@@ -1,4 +1,4 @@
-package com.tregubov.firstserver.securiry;
+package com.tregubov.firstserver.security;
 
 import org.mindrot.jbcrypt.BCrypt;
 

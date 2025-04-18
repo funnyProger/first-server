@@ -1,5 +1,6 @@
-package com.tregubov.firstserver.entities;
+package com.tregubov.firstserver.entities.account;
 
+import com.tregubov.firstserver.entities.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

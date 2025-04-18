@@ -2,14 +2,13 @@ package com.tregubov.firstserver.controllers;
 
 import com.tregubov.firstserver.DTOs.AccountIdDTO;
 import com.tregubov.firstserver.DTOs.UpdateCartOrFavoritesDTO;
-import com.tregubov.firstserver.entities.Product;
+import com.tregubov.firstserver.entities.product.Product;
 import com.tregubov.firstserver.service.AccountService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Set;
-import java.util.UUID;
 
 @RestController
 @RequestMapping("/account")

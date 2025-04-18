@@ -1,6 +1,6 @@
 package com.tregubov.firstserver.service;
 
-import com.tregubov.firstserver.entities.Product;
+import com.tregubov.firstserver.entities.product.Product;
 import com.tregubov.firstserver.repository.ProductRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

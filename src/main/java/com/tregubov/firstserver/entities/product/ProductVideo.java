@@ -1,4 +1,4 @@
-package com.tregubov.firstserver.entities;
+package com.tregubov.firstserver.entities.product;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
@@ -8,30 +8,29 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
-import java.util.HashSet;
-import java.util.Set;
-
 @Entity
-@Table(catalog = "store", schema = "public", name = "role")
+@Table(catalog = "store", schema = "public", name = "product_video")
 @Cacheable
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_ONLY)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-public class Role {
+public class ProductVideo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
 
-    @Column(name = "name", nullable = false, unique = true, length = 50)
+    @Column(name = "name", nullable = false, unique = true)
     private String name;
 
     @JsonIgnore
-    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-    private Set<Account> accounts = new HashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
+    private Product product;
 
+    @Column(name = "video", nullable = false)
+    private byte[] video;
 }

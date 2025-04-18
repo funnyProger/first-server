@@ -1,6 +1,6 @@
 package com.tregubov.firstserver.repository;
 
-import com.tregubov.firstserver.entities.Account;
+import com.tregubov.firstserver.entities.account.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,6 +1,6 @@
 package com.tregubov.firstserver.repository;
 
-import com.tregubov.firstserver.entities.Product;
+import com.tregubov.firstserver.entities.product.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
