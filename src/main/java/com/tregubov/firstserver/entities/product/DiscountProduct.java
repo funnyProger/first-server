@@ -1,5 +1,6 @@
 package com.tregubov.firstserver.entities.product;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,9 +27,9 @@ public class DiscountProduct {
     @Column(name = "id")
     private int id;
 
+    @JsonIgnore
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "product_id", referencedColumnName = "id", unique = true)
-    @Column(name = "product_id")
     private Product product;
 
     @Column(name = "discount", nullable = false)
@@ -36,7 +37,6 @@ public class DiscountProduct {
 
     @Column(name = "regular_price", nullable = false, precision = 10, scale = 2)
     private BigDecimal regularPrice;
-
 
     @Column(name = "discount_price", nullable = false, precision = 10, scale = 2, insertable = false, updatable = false,
             columnDefinition = "NUMERIC(10, 2) GENERATED ALWAYS AS (regular_price * (discount / 100.0)) STORED")

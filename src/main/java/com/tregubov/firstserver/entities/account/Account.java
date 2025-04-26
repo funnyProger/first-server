@@ -1,5 +1,7 @@
 package com.tregubov.firstserver.entities.account;
 
+import com.tregubov.firstserver.entities.order.AccountOrder;
+import com.tregubov.firstserver.entities.product.Comment;
 import com.tregubov.firstserver.entities.product.Product;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -65,5 +67,11 @@ public class Account {
     )
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
     private Set<Product> favorites = new HashSet<>();
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
+    private Set<AccountOrder> orders = new HashSet<>();
+
+    @OneToMany(mappedBy = "account", fetch = FetchType.EAGER)
+    private Set<Comment> comments = new HashSet<>();
 
 }

@@ -17,7 +17,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 @NoArgsConstructor
 @Getter
 @Setter
-public class VideoImage {
+public class CommentVideo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

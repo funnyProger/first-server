@@ -11,6 +11,8 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import java.sql.Timestamp;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(catalog = "store", schema = "public", name = "comment")
@@ -36,17 +38,23 @@ public class Comment {
     private Product product;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
     @Column(name = "rating", nullable = false)
     private int rating;
 
-    @Column(name = "advantage", nullable = true)
+    @Column(name = "advantage")
     private String advantage;
 
-    @Column(name = "disadvantage", nullable = true)
+    @Column(name = "disadvantage")
     private String disadvantage;
+
+    @OneToMany(mappedBy = "comment", fetch = FetchType.EAGER)
+    private Set<CommentImage> images = new HashSet<>();
+
+    @OneToMany(mappedBy = "comment", fetch = FetchType.EAGER)
+    private Set<CommentVideo> videos = new HashSet<>();
 
 }

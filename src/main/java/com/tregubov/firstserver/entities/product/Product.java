@@ -53,4 +53,7 @@ public class Product {
     @Column(name = "count", nullable = false)
     private int count;
 
+    @OneToOne(mappedBy = "product", fetch = FetchType.EAGER)
+    private DiscountProduct discountProduct;
+
 }
