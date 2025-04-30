@@ -29,7 +29,6 @@ public class OrderMetadata {
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "order_id", referencedColumnName = "id")
-    @Column(name = "order_id")
     private AccountOrder accountOrder;
 
     @Column(name = "created_at")

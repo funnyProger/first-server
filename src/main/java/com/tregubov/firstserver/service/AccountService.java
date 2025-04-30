@@ -1,8 +1,6 @@
 package com.tregubov.firstserver.service;
 
-import com.tregubov.firstserver.DTOs.AccountIdDTO;
-import com.tregubov.firstserver.DTOs.OrderDTO;
-import com.tregubov.firstserver.DTOs.UpdateCartOrFavoritesDTO;
+import com.tregubov.firstserver.DTOs.*;
 import com.tregubov.firstserver.constants.Errors;
 import com.tregubov.firstserver.constants.Success;
 import com.tregubov.firstserver.entities.account.Account;
@@ -10,15 +8,16 @@ import com.tregubov.firstserver.entities.order.AccountOrder;
 import com.tregubov.firstserver.entities.order.OrderStatus;
 import com.tregubov.firstserver.entities.order.Promocode;
 import com.tregubov.firstserver.entities.product.Comment;
+import com.tregubov.firstserver.entities.product.CommentImage;
+import com.tregubov.firstserver.entities.product.CommentVideo;
 import com.tregubov.firstserver.entities.product.Product;
-import com.tregubov.firstserver.repository.AccountRepository;
-import com.tregubov.firstserver.repository.OrderStatusRepository;
-import com.tregubov.firstserver.repository.ProductRepository;
-import com.tregubov.firstserver.repository.PromocodeRepository;
+import com.tregubov.firstserver.repository.*;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.util.*;
 
 @Service
@@ -29,17 +28,20 @@ public class AccountService {
     private final ProductRepository productRepository;
     private final PromocodeRepository promocodeRepository;
     private final OrderStatusRepository orderStatusRepository;
+    private final CommentRepository commentRepository;
 
     public AccountService(
             AccountRepository accountRepository,
             ProductRepository productRepository,
             PromocodeRepository promocodeRepository,
-            OrderStatusRepository orderStatusRepository
+            OrderStatusRepository orderStatusRepository,
+            CommentRepository commentRepository
     ) {
         this.accountRepository = accountRepository;
         this.productRepository = productRepository;
         this.promocodeRepository = promocodeRepository;
         this.orderStatusRepository = orderStatusRepository;
+        this.commentRepository = commentRepository;
     }
 
     public boolean addProductToCart(UpdateCartOrFavoritesDTO updateCartOrFavoritesDTO) {
@@ -170,6 +172,65 @@ public class AccountService {
         return comments;
     }
 
+    public boolean addComment(AddCommentDTO addCommentDTO) {
+        try {
+            Optional<Account> accountContainer = accountRepository.findById(addCommentDTO.getAccountId());
+            Optional<Product> productContainer = productRepository.findById(addCommentDTO.getProductId());
+
+            if (accountContainer.isPresent() && productContainer.isPresent()) {
+                Comment comment = new Comment();
+                comment.setCreatedAt(Timestamp.from(Instant.now()));
+                comment.setProduct(productContainer.get());
+                comment.setAccount(accountContainer.get());
+                comment.setRating(addCommentDTO.getRating());
+                comment.setAdvantage(addCommentDTO.getAdvantage());
+                comment.setDisadvantage(addCommentDTO.getDisadvantage());
+                Set<CommentImage> commentImages = comment.getImages();
+                Set<CommentVideo> commentVideos = comment.getVideos();
+
+                if (commentImages != null && !commentImages.isEmpty()) {
+                    for (String image: addCommentDTO.getImages()) {
+                        CommentImage commentImage = new CommentImage();
+                        commentImage.setComment(comment);
+                        commentImage.setImage(Base64.getDecoder().decode(image));
+                        commentImages.add(commentImage);
+                    }
+                }
+                if (commentVideos != null && !commentVideos.isEmpty()) {
+                    for (String video: addCommentDTO.getVideos()) {
+                        CommentVideo commentVideo = new CommentVideo();
+                        commentVideo.setComment(comment);
+                        commentVideo.setVideo(Base64.getDecoder().decode(video));
+                        commentVideos.add(commentVideo);
+                    }
+                }
+
+                accountRepository.save(accountContainer.get());
+                productRepository.save(productContainer.get());
+                commentRepository.save(comment);
+
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception exception) {
+            return false;
+        }
+    }
+
+    public boolean removeComment(RemoveCommentDTO removeCommentDTO) {
+        try {
+            if (commentRepository.existsById(removeCommentDTO.getCommentId())) {
+                commentRepository.deleteCommentById(removeCommentDTO.getCommentId());
+                return true;
+            } else {
+                return false;
+            }
+        } catch (Exception exception) {
+            return false;
+        }
+    }
+
     public int makeAnOrder(OrderDTO orderDTO) {
         Optional<Product> productContainer = productRepository.findById(orderDTO.getProductId());
         if (productContainer.isEmpty()) {
@@ -182,7 +243,7 @@ public class AccountService {
 
         Optional<Account> accountContainer = accountRepository.findById(orderDTO.getAccountId());
         if (accountContainer.isPresent()) {
-            Optional<OrderStatus> orderStatusContainer = orderStatusRepository.findByStatus("Сборка");
+            Optional<OrderStatus> orderStatusContainer = orderStatusRepository.findById(1);
             if (orderStatusContainer.isPresent()) {
                 OrderStatus orderStatus = orderStatusContainer.get();
                 Account account = accountContainer.get();

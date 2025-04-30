@@ -1,8 +1,6 @@
 package com.tregubov.firstserver.controllers;
 
-import com.tregubov.firstserver.DTOs.AccountIdDTO;
-import com.tregubov.firstserver.DTOs.OrderDTO;
-import com.tregubov.firstserver.DTOs.UpdateCartOrFavoritesDTO;
+import com.tregubov.firstserver.DTOs.*;
 import com.tregubov.firstserver.constants.Errors;
 import com.tregubov.firstserver.entities.order.AccountOrder;
 import com.tregubov.firstserver.entities.product.Comment;
@@ -94,6 +92,32 @@ public class AccountController {
     @PostMapping("/comments")
     public Set<Comment> getComments(@RequestBody AccountIdDTO accountIdDTO) {
         return accountService.getComments(accountIdDTO);
+    }
+
+    @PostMapping("/add-comment")
+    public ResponseEntity<String> addComment(@RequestBody AddCommentDTO addCommentDTO) {
+        boolean result = accountService.addComment(addCommentDTO);
+        ResponseEntity<String> response = ResponseEntity.ok("Комментарий добавлен");
+
+        if (!result) {
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Комментарий не добавлен, попробуйте позже");
+        }
+
+        return response;
+    }
+
+    @PostMapping("/remove-comment")
+    public ResponseEntity<String> removeComment(@RequestBody RemoveCommentDTO removeCommentDTO) {
+        boolean result = accountService.removeComment(removeCommentDTO);
+        ResponseEntity<String> response = ResponseEntity.ok("Комментарий удален");
+
+        if (!result) {
+            response = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Не получилось удалить комментарий, попробуйте позже");
+        }
+
+        return response;
     }
 
     @PostMapping("/order")

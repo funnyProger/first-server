@@ -56,4 +56,7 @@ public class Product {
     @OneToOne(mappedBy = "product", fetch = FetchType.EAGER)
     private DiscountProduct discountProduct;
 
+    @OneToMany(mappedBy = "product", fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+    private Set<Comment> comments = new HashSet<>();
+
 }
